@@ -1,0 +1,10 @@
+:doctype: article
+
+= Patterns
+
+Implementation of GoF patterns if Go.
+
+== Strategy Pattern
+
+Two sorting algorithms, bubble and shell, that sort items. Same api is used in both cases.
+
