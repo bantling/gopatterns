@@ -5,9 +5,19 @@
 Implementation of GoF patterns if Go.
 Unless otherwise noted, examples can be run as `go cmd/{dirname}/main.go`.
 
-== Creation
+There is also an additional patter of my own, normalization.
+ 
+== Adapter
 
-Contains builder, factory, and singleton.
+== Bridge
+
+== Chain of Responsibility
+
+== Command
+
+== Composite
+
+== Creation (Builder, Factory, Singleton)
 
 A Service is a builder that can read from an underlying Reader to retrieve data.
 The object begins with default options, which can be overriden with builder methods.
@@ -16,21 +26,95 @@ A ServiceFactory uses Service to build multiple versions of Service.
 
 A Services contains configured Service instances.
 Both Services and the Service objects it contains are singletons.
-A suite of unit tests could create a different version of Services where the all services are local services
-that not need to connect to a server.
+A suite of unit tests could create a different version of Services where all the services are local services
+that do not need to connect to a server.
 
-Execute the code as follows:
+Note that the code has a creation technique unique to Go.
+One issue I have with Go is that you cannot force the user to call a constructor function.
+If the user tries to use a zero value for a type that has some required fields, how can this be handled without panicking?
+
+Some would argue it's the fault of the caller for not calling the constructor function.
+I subscribe to the view that using an API incorrectly should be as difficult as reasonably possible, given the confines of the language in question.
+
+With that view in mind, the technique used is as follows (using LocalService as an example):
+
+* LocalService contains []Product, we want some default values in case none were provided.
+* The chaining builder method WithValues allows a user to specify some values.
+This is better than a constructor function:
+** It can be called multiple times
+** If more internal fields are added later, more chaining "With" methods can be added that do not break existing code.
+* The pointer receiver configure() method checks each value to see if it is the zero value, and if so, initializes it
+* The interface value receiver Call() method uses (&receiver).configure()
+** Since Call is value receiver, a separate copy of the LocalService is created
+** The address of the copy is used to call configure()
+** If we examine the original object after a Call() invocation, it has not changed
+
+This pattern provides:
+
+* The flexibility of ensuring default values are used
+* We can examine the original object at any time without potentially confusing side effects when debugging the code
+* Single responsiblity principle: only the configure method knows how to configure default values
+
+The cost of this pattern is having to invoke the configure() method in each method that needs sensible values.
+In this case, only one method of each type has to make that call.
+
+Note that while LocalService and RemoteService use the pattern exactly as described, ServiceFactory has one change:
+The Load() method that calls configure() has a pointer receiver, indicating the original value gets modified.
+Given that the purpose is to load configuration from a JSON file - which should only occur once - it is better in this case to see the modified object when debugging.
+
+Execute the code as follows (so it can find the JSON file):
 
 ```
 (cd cmd/creation; go run main.go)
-``` 
+```
 
 == Decorator Pattern
 
 A Reader decorator counts line endings as it reads data.
 It wraps around a source reader to count the lines of.
 
+== Facade
+
+== Flyweight
+
+== Iterator
+
+== Mediator
+
+== Memento
+
+== MVC
+
+== Normalization
+
+I use the word normalization to refer to a pattern for the following process:
+
+* Translate different source types into a single target type
+* The rules for translating each source type generally differ
+* There may be commonalities in how different source types are translated
+* A single source instance may generate multiple target instances
+** Translation may involve parent templates that many children copy and modify
+** Translating children may involve references to generated siblings     
+* Determining the right level of abstraction for commonalities can be different in each use case
+
+You'll notice I use the word "may" a number of times.
+In fact, the particular real-world use case that prompted me to come up with this design pattern involved all points listed.
+
+This is basically a specialization of the Visitor pattern, where each source type has its own unique visitation rules.
+
+== Observer
+
+== Prototype
+
+== Proxy
+
+== State
+
 == Strategy Pattern
 
 Two sorting algorithms, bubble and go standard sort, that sort items. Same api is used in both cases.
-The strategy to choosing an implementation is based on the number of items in the list.
+The strategy for choosing an implementation is based on the number of items in the list.
+
+== Template
+
+== Visitor
