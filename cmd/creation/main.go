@@ -164,6 +164,15 @@ func main() {
 	fmt.Printf("%s:\n", f.filename)
 
 	for name, svc := range f.services {
+		if ls, isa := svc.(LocalService); isa {
+			(&ls).configure()
+			fmt.Printf("- configured = %+v\n", ls)
+		} else {
+			rs := svc.(RemoteService)
+			(&rs).configure()
+			fmt.Printf("- configured = %+v\n", rs)
+		}
+
 		fmt.Printf("Name: %s, Type: %T, %+v\n", name, svc, svc)
 	}
 }
