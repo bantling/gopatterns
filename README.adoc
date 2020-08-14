@@ -3,8 +3,33 @@
 = Patterns
 
 Implementation of GoF patterns if Go.
+Unless otherwise noted, examples can be run as `go cmd/{dirname}/main.go`.
+
+== Creation
+
+Contains builder, factory, and singleton.
+
+A Service is a builder that can read from an underlying Reader to retrieve data.
+The object begins with default options (GET http://localhost:80), which can ber overriden with builder methods.
+
+A ServiceFactory uses ServiceBuilder to build multiple versions of Service.
+
+A Services instance contains methods to retrieve configured Service instances.
+Both Services and the Service objects it contains are singletons.
+A suite of unit tests could create a different version of Services where the methods return objects that do not actually connect to a server.
+
+Execute the code as follows:
+
+```
+(cd cmd/creation; go run main.go)
+``` 
+
+== Decorator Pattern
+
+A Reader decorator counts line endings as it reads data.
+It wraps round a source reader to count the lines of.
 
 == Strategy Pattern
 
-Two sorting algorithms, bubble and shell, that sort items. Same api is used in both cases.
-
+Two sorting algorithms, bubble and go standard sort, that sort items. Same api is used in both cases.
+The strategy to choosing an implementation is based on the number of items in the list.
