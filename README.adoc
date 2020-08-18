@@ -9,6 +9,8 @@ There is also an additional patter of my own, normalization.
  
 == Adapter
 
+
+
 == Bridge
 
 == Chain of Responsibility
@@ -100,7 +102,7 @@ I use the word normalization to refer to a pattern for the following process:
 You'll notice I use the word "may" a number of times.
 In fact, the particular real-world use case that prompted me to come up with this design pattern involved all points listed.
 
-This is basically a specialization of the Visitor pattern, where each source type has its own unique visitation rules.
+This is a specialization of the Visitor pattern, where each source type has its own unique visitation rules.
 
 == Observer
 
