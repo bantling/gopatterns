@@ -9,9 +9,23 @@ There is also an additional patter of my own, normalization.
  
 == Adapter
 
-
+Adapts a Reader (byte oriented) into a RuneReader (unicode character oriented).
+This is the same idea as a Java InputStreamReader.
 
 == Bridge
+
+One side of the bridge is data that can be received and returned via multiple means - eg ftp, email, webdav, ssh, http, etc.
+Some methods might be one way - maybe email can only be used to receive, and ftp is used only to return.
+There can be multiple formats of data - eg json, yaml, pdf, excel, csv.
+On the other side of the bridge are operations on the data, where different operations have some commonality - eg they all have to be able to initalize and to return a result.
+
+Operations are somehow chosen as part of receiving data - eg email subject line and/or address, ftp filename, http path and/or query params.
+The operation and data are conveyed across the bridge to the operation side.
+
+New sources, formats, and operations can be easily added.
+Effectively, the data sources and formats are one aspect of the system and the operations are another aspect.
+Each aspect need their own abstractions and implementations to be decoupled from the other.
+In other words it is an N times M system, where N is the data sources and formats, and M is the set of operations. 
 
 == Chain of Responsibility
 
