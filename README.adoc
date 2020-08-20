@@ -24,7 +24,7 @@ The operation and data are conveyed across the bridge to the operation side.
 
 New sources, formats, and operations can be easily added.
 Effectively, the data sources and formats are one aspect of the system and the operations are another aspect.
-Each aspect need their own abstractions and implementations to be decoupled from the other.
+Each aspect needs their own abstractions and implementations to be decoupled from the other.
 In other words it is an N times M system, where N is the data sources and formats, and M is the set of operations. 
 
 == Chain of Responsibility
