@@ -98,6 +98,7 @@ It wraps around a source reader to count the lines of.
 == Mediator
 
 The same as bridge, but refactored to have a mediator between the two sides.
+Data flow is from ftp/http to mediator to operations, then back from operations to mediator to ftp/http.
 
 == Memento
 
