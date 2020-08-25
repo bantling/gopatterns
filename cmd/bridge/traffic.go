@@ -26,8 +26,8 @@ func (t *Traffic) Receive(filename string, data []byte) {
 	name := parts[0]
 	ext := parts[1]
 	typ := StringToDataFormat(ext)
-	fmt.Printf("Received file of type %s in %s format\n", name, typ) 
-	
+	fmt.Printf("Received file of type %s in %s format\n", name, typ)
+
 	switch name {
 	case "customer":
 		var cust Customer
@@ -67,7 +67,7 @@ func (t Traffic) Send(filename string, dt DataType) {
 	default:
 		panic(fmt.Errorf("Unknown send path"))
 	}
-	
+
 	fmt.Printf("Sent file %s of type %s in %s format\n", filename, name, typ)
 }
 
@@ -116,5 +116,5 @@ func (h HTTPTraffic) Send(path string, typ DataFormat) {
 	pathParts := strings.Split(path, "/")
 	filename := pathParts[1]
 	fmt.Println("Sending HTTP for", filename)
-	h.traffic.Send(filename + "." + typ.String(), StringToDataType(filename))
+	h.traffic.Send(filename+"."+typ.String(), StringToDataType(filename))
 }

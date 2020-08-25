@@ -5,10 +5,6 @@ import (
 )
 
 func main() {
-	traffic := NewTraffic()
-	ftp := NewFTPTraffic(traffic)
-	http := NewHTTPTraffic(traffic)
-
 	cust := Customer{
 		ID:        1,
 		FirstName: "John",
@@ -22,8 +18,7 @@ func main() {
 	}
 
 	buf := Marshal(cust, GOB)
-	ftp.Receive("customer.gob", buf)
-	http.Send("/customer/1", JSON)
+	ftpTraffic.Request("/customer/1.gob", buf)
 
 	invoice := Invoice{
 		Number:     "A14",
@@ -40,7 +35,8 @@ func main() {
 	}
 
 	buf = Marshal(invoice, JSON)
-	http.Receive("/invoice/A14", JSON, buf)
+	httpTraffic.Request("/invoice/A14", JSON, buf)
 
-	ftp.Send("1.json", InvoiceType)
+	ftpTraffic.Request("/customer/1.json", nil)
+	httpTraffic.Request("/invoice/1", GOB, nil)
 }

@@ -97,6 +97,8 @@ It wraps around a source reader to count the lines of.
 
 == Mediator
 
+The same as bridge, but refactored to have a mediator between the two sides.
+
 == Memento
 
 == MVC
