@@ -27,7 +27,11 @@ func NewSmartBulb(id int) *SmartBulb {
 // Switch switches bulb on or off
 func (s *SmartBulb) Switch(on bool) {
 	s.On = on
-	fmt.Println("Bulb", s.ID, "switched", on)
+	msg := "On"
+	if !on {
+		msg = "Off"
+	}
+	fmt.Println("Bulb", s.ID, "switched", msg)
 }
 
 // Changes sets colour
@@ -116,11 +120,21 @@ func (c *Client) WithSequence(seqNo int, seq *SequenceInvoker) *Client {
 	return c
 }
 
+// PerformSequence performs a specific sequence
 func (c Client) PerformSequence(seqNo int) {
 	c.invokers[seqNo].InvokeAndCount()
 	fmt.Println("Performed sequence", seqNo)
 }
 
 func main() {
-
+	bulb := NewSmartBulb(1)
+	seq := NewSequenceInvoker().
+		WithCommand(SwitchOn(bulb)).
+		WithCommand(ColourBlue(bulb)).
+		WithCommand(ColourRed(bulb)).
+		WithCommand(ColourGreen(bulb)).
+		WithCommand(SwitchOff(bulb))
+	cl := NewClient().WithSequence(1, seq)
+	cl.PerformSequence(1)
+	cl.PerformSequence(1)
 }
