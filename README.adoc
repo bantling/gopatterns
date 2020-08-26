@@ -31,6 +31,8 @@ In other words it is an N times M system, where N is the data sources and format
 
 == Command
 
+Execute a sequence of turning a smart bulb on/off, and changing the colors.
+
 == Composite
 
 == Creation (Builder, Factory, Singleton)
