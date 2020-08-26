@@ -19,7 +19,7 @@ type Section struct {
 
 // String is the Section Stringer
 func (s Section) String() string {
-	return fmt.Sprintf("{Style: %+v, Data: %s", *s.Style, s.Data)
+	return fmt.Sprintf("{Style: %+v Data: %s", *s.Style, s.Data)
 }
 
 // Document is the entire document, consisting only of sections to guarantee styles are applied as intended
