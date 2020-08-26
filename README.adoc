@@ -91,6 +91,8 @@ It wraps around a source reader to count the lines of.
 
 == Facade
 
+A complex request that has to access multiple systems is implemented as a single method that combines several results.
+
 == Flyweight
 
 == Iterator
