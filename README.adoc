@@ -3,7 +3,7 @@
 = Patterns
 
 Implementation of GoF patterns if Go.
-Unless otherwise noted, examples can be run as `go cmd/{dirname}/main.go`.
+Unless otherwise noted, examples can be run as `go cmd/{dirname}/*.go`.
 
 There is also an additional patter of my own, normalization.
  
@@ -94,6 +94,11 @@ It wraps around a source reader to count the lines of.
 A complex request that has to access multiple systems is implemented as a single method that combines several results.
 
 == Flyweight
+
+A document has any number of style definitions, which are heavy weight objects with lots of detail (font, size, weight, colour, paragraph spacing etc).
+The style definitions are applied to various sections of the document.
+The definitions are applied by reference rather than copying them to conserve memory and disk space.
+Styles are modifiable so that all affected sections can be restyled by just altering the style definition.
 
 == Iterator
 
