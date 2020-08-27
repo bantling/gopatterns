@@ -7,16 +7,16 @@ import (
 
 // ProductNames contains a set of product names
 type ProductNames struct {
-	names map[string]bool
+	names         map[string]bool
 	modifications uint
 }
 
 // ProductNamesIterator is an iterator of ProductNames
 // Call Next() to advance to next value, and only if it returns true, call Name() to get next name
 type ProductNamesIterator struct {
-	p *ProductNames
+	p             *ProductNames
 	modifications uint
-	iter *reflect.MapIter
+	iter          *reflect.MapIter
 }
 
 // Next advances to next product name, returning true if there are any more left to iterate
@@ -25,7 +25,7 @@ func (pni *ProductNamesIterator) Next() bool {
 	if pni.modifications != pni.p.modifications {
 		panic(fmt.Errorf("The set of product names has been modified since the iterator was created"))
 	}
-	
+
 	return pni.iter.Next()
 }
 
@@ -35,7 +35,7 @@ func (pni *ProductNamesIterator) Name() string {
 	if pni.modifications != pni.p.modifications {
 		panic(fmt.Errorf("The set of product names has been modified since the iterator was created"))
 	}
-	
+
 	return pni.iter.Key().String()
 }
 
@@ -45,9 +45,9 @@ func NewProductNames(products ...string) *ProductNames {
 	for _, product := range products {
 		m[product] = true
 	}
-	
+
 	return &ProductNames{
-		names: m,
+		names:         m,
 		modifications: 0,
 	}
 }
@@ -69,9 +69,9 @@ func (p *ProductNames) RemoveProductName(product string) *ProductNames {
 // Iter creates an iterator of the product names
 func (p *ProductNames) Iter() *ProductNamesIterator {
 	return &ProductNamesIterator{
-		p: p,
+		p:             p,
 		modifications: p.modifications,
-		iter: reflect.ValueOf(p.names).MapRange(), 
+		iter:          reflect.ValueOf(p.names).MapRange(),
 	}
 }
 
@@ -80,7 +80,7 @@ func main() {
 	for productIter := p.Iter(); productIter.Next(); {
 		fmt.Println("Product ", productIter.Name())
 	}
-	
+
 	// Die if modifications made during iteration
 	productIter := p.Iter()
 	p.RemoveProductName("tvs")

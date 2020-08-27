@@ -13,7 +13,7 @@ type Node interface {
 }
 
 // LeafNode represents nodes that have no children
-type LeafNode struct {}
+type LeafNode struct{}
 
 // Children returns nil
 func (n LeafNode) Children() []Node {
@@ -63,10 +63,10 @@ const (
 
 var (
 	operatorToString = map[Operator]string{
-		Addition: "+",
-		Subtraction: "-",
+		Addition:       "+",
+		Subtraction:    "-",
 		Multiplication: "*",
-		Division: "/",
+		Division:       "/",
 	}
 )
 
@@ -111,7 +111,7 @@ func (b BinaryOperation) String() string {
 // InfixTraversal does an infix traversal of the tree
 func InfixTraversal(root Node) string {
 	var bldr strings.Builder
-	
+
 	// infix recursion
 	var infix func(n Node)
 	infix = func(n Node) {
@@ -130,14 +130,14 @@ func InfixTraversal(root Node) string {
 		}
 	}
 	infix(root)
-	
+
 	return bldr.String()
 }
 
 // PrefixTraversal does a prefix traversal of the tree
 func PrefixTraversal(root Node) string {
 	var bldr strings.Builder
-	
+
 	// prefix recursion
 	var prefix func(n Node)
 	prefix = func(n Node) {
@@ -154,14 +154,14 @@ func PrefixTraversal(root Node) string {
 		}
 	}
 	prefix(root)
-	
+
 	return bldr.String()
 }
 
 // PostfixTraversal does a prefix traversal of the tree
 func PostfixTraversal(root Node) string {
 	var bldr strings.Builder
-	
+
 	// postfix recursion
 	var postfix func(n Node)
 	postfix = func(n Node) {
@@ -178,22 +178,22 @@ func PostfixTraversal(root Node) string {
 		}
 	}
 	postfix(root)
-	
+
 	return bldr.String()
 }
 
 func main() {
-	exprs := []Node {
+	exprs := []Node{
 		// 1
 		NewNumericNode(1),
-		
+
 		// 2 + 3
 		NewBinaryOperation(
 			NewNumericNode(2),
 			Addition,
 			NewNumericNode(3),
 		),
-		
+
 		// ((1 * 2) / 3) + (4 - ((5 / 6) * 7))
 		NewBinaryOperation(
 			NewBinaryOperation(
@@ -221,9 +221,9 @@ func main() {
 			),
 		),
 	}
-	
+
 	for _, expr := range exprs {
-		fmt.Println("Expr =",expr)
+		fmt.Println("Expr =", expr)
 		fmt.Println("  Infix =", InfixTraversal(expr))
 		fmt.Println("  Prefix =", PrefixTraversal(expr))
 		fmt.Println("  Postfix =", PostfixTraversal(expr))

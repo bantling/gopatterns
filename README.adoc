@@ -111,17 +111,7 @@ Styles are modifiable so that all affected sections can be restyled by just alte
 
 == Iterator
 
-A functional iterator backed by a slice of values.
-The iterator itself is a function that returns (T, bool) for some type T to be iterated.
-The value of T is only valid if the bool is true, else the T is a zero value.
-The method that returns the iterator is effectively a function generator.
-The generated iterator has a closure on value(s) that track the iteration progress.
-Once all values have been exhausted, the iterator will return (zero value, false) no matter how many times it is called.
-
-In this case, the type containing the values to be iterated is mutable (values can be added or removed).
-The iterator will panic if any modifications have been made since the iterator was created,
-even if the modifications as a whole return to the original state at the time the iterator was generated.
-The check isn't perfect, it's theoretically possible to make modifications it won't detect, but this is difficult enough to be ignored.    
+An iterator for a struct that contains a slice of values.
 
 == Mediator
 
@@ -129,6 +119,8 @@ The same as bridge, but refactored to have a mediator between the two sides.
 Data flow is from ftp/http to mediator to operations, then back from operations to mediator to ftp/http.
 
 == Memento
+
+Modifications to a set that can be undone.
 
 == MVC
 
