@@ -184,6 +184,7 @@ Unlike Java, go does not have the ability to generate a Proxy of an interface at
 The only options are a code generator or plain old doing it by hand.
 
 A simple example is presented for an interface of one method.
+The proxy caches results of a slow idempotent task.
 
 == State
 
