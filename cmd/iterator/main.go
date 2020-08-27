@@ -11,6 +11,34 @@ type ProductNames struct {
 	modifications uint
 }
 
+// ProductNamesIterator is an iterator of ProductNames
+// Call Next() to advance to next value, and only if it returns true, call Name() to get next name
+type ProductNamesIterator struct {
+	p *ProductNames
+	modifications uint
+	iter *reflect.MapIter
+}
+
+// Next advances to next product name, returning true if there are any more left to iterate
+// Panics if changes have been made since iterator was created
+func (pni *ProductNamesIterator) Next() bool {
+	if pni.modifications != pni.p.modifications {
+		panic(fmt.Errorf("The set of product names has been modified since the iterator was created"))
+	}
+	
+	return pni.iter.Next()
+}
+
+// Name returns name of next product
+// Panics if changes have been made since iterator was created, or iterator has been exhausted
+func (pni *ProductNamesIterator) Name() string {
+	if pni.modifications != pni.p.modifications {
+		panic(fmt.Errorf("The set of product names has been modified since the iterator was created"))
+	}
+	
+	return pni.iter.Key().String()
+}
+
 // NewProductNames constructs a ProductNames
 func NewProductNames(products ...string) *ProductNames {
 	m := map[string]bool{}
@@ -38,38 +66,23 @@ func (p *ProductNames) RemoveProductName(product string) *ProductNames {
 	return p
 }
 
-// Iter generates an iterator of the product names, and panics if modifications were made since the iterator was created
-// Although it makes no modifications it has to have a pointer receiver to see updates to the modification counter
-func (p *ProductNames) Iter() func() (product string, valid bool) {
-	var (
-		modifications = p.modifications
-		mapIter = reflect.ValueOf(p.names).MapRange()
-	)
-	return func() (string, bool) {
-		// Die if modifications made since last call
-		if modifications != p.modifications {
-			panic(fmt.Errorf("The set of product names has been modified since the iterator was created"))
-		}
-		
-		// Return next product if there is one
-		if mapIter.Next() {
-			return mapIter.Key().String(), true
-		}
-		
-		// Return empty string, false if there isn't
-		return "", false
+// Iter creates an iterator of the product names
+func (p *ProductNames) Iter() *ProductNamesIterator {
+	return &ProductNamesIterator{
+		p: p,
+		modifications: p.modifications,
+		iter: reflect.ValueOf(p.names).MapRange(), 
 	}
 }
 
 func main() {
 	p := NewProductNames("car", "bicycle", "tvs")
-	iter := p.Iter()
-	for product, hasNext := iter(); hasNext; product, hasNext = iter() {
-		fmt.Println("Product ", product)
+	for productIter := p.Iter(); productIter.Next(); {
+		fmt.Println("Product ", productIter.Name())
 	}
 	
 	// Die if modifications made during iteration
-	iter = p.Iter()
+	productIter := p.Iter()
 	p.RemoveProductName("tvs")
-	iter()
+	productIter.Next()
 }
