@@ -117,9 +117,12 @@ func InfixTraversal(root Node) string {
 	infix = func(n Node) {
 		if bin, isa := n.(*BinaryOperation); isa {
 			children := bin.Children()
+			// left
 			bldr.WriteRune('(')
 			infix(children[0])
+			// operator
 			bldr.WriteString(children[1].String())
+			// right
 			infix(children[2])
 			bldr.WriteRune(')')
 		} else {
@@ -131,10 +134,98 @@ func InfixTraversal(root Node) string {
 	return bldr.String()
 }
 
+// PrefixTraversal does a prefix traversal of the tree
+func PrefixTraversal(root Node) string {
+	var bldr strings.Builder
+	
+	// prefix recursion
+	var prefix func(n Node)
+	prefix = func(n Node) {
+		if bin, isa := n.(*BinaryOperation); isa {
+			children := bin.Children()
+			// operator
+			bldr.WriteString(children[1].String())
+			// left
+			prefix(children[0])
+			// right
+			prefix(children[2])
+		} else {
+			bldr.WriteString(n.String())
+		}
+	}
+	prefix(root)
+	
+	return bldr.String()
+}
+
+// PostfixTraversal does a prefix traversal of the tree
+func PostfixTraversal(root Node) string {
+	var bldr strings.Builder
+	
+	// postfix recursion
+	var postfix func(n Node)
+	postfix = func(n Node) {
+		if bin, isa := n.(*BinaryOperation); isa {
+			children := bin.Children()
+			// left
+			postfix(children[0])
+			// right
+			postfix(children[2])
+			// operator
+			bldr.WriteString(children[1].String())
+		} else {
+			bldr.WriteString(n.String())
+		}
+	}
+	postfix(root)
+	
+	return bldr.String()
+}
+
 func main() {
-	fmt.Println(
-		InfixTraversal(
-			NewNumericNode(1),
+	exprs := []Node {
+		// 1
+		NewNumericNode(1),
+		
+		// 2 + 3
+		NewBinaryOperation(
+			NewNumericNode(2),
+			Addition,
+			NewNumericNode(3),
 		),
-	)
+		
+		// ((1 * 2) / 3) + (4 - ((5 / 6) * 7))
+		NewBinaryOperation(
+			NewBinaryOperation(
+				NewBinaryOperation(
+					NewNumericNode(1),
+					Multiplication,
+					NewNumericNode(2),
+				),
+				Division,
+				NewNumericNode(3),
+			),
+			Addition,
+			NewBinaryOperation(
+				NewNumericNode(4),
+				Subtraction,
+				NewBinaryOperation(
+					NewBinaryOperation(
+						NewNumericNode(5),
+						Division,
+						NewNumericNode(6),
+					),
+					Multiplication,
+					NewNumericNode(7),
+				),
+			),
+		),
+	}
+	
+	for _, expr := range exprs {
+		fmt.Println("Expr =",expr)
+		fmt.Println("  Infix =", InfixTraversal(expr))
+		fmt.Println("  Prefix =", PrefixTraversal(expr))
+		fmt.Println("  Postfix =", PostfixTraversal(expr))
+	}
 }
