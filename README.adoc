@@ -147,6 +147,37 @@ A subject updates multiple observers as values are updated.
 
 == Prototype
 
+Go does not need to implement prototype, as values can already be cloned as a language feature.
+EG, if you run the following program:
+
+....
+package main
+
+import (
+    "fmt"
+)
+
+type Product struct {
+    Name string
+    Price string
+}
+
+func main() {
+    var (
+        p1 = Product{Name: "first", Price: "1.00"}
+        p2 = p1 // clone p1 into p2
+    )
+    p2.Name = "second" // modify p2 so it is different
+    fmt.Printf("%p, %+v; %p, %+v\n", &p1, p1, &p2, p2)  
+}
+....
+
+It produces output like the following:
+
+....
+0xc0000ae040, {Name:first Price:1.00}; 0xc0000ae060, {Name:second Price:1.00}
+....
+
 == Proxy
 
 == State
