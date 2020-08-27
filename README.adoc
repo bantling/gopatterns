@@ -143,6 +143,8 @@ This is a specialization of the Visitor pattern, where each source type has its 
 
 == Observer
 
+A subject updates multiple observers as values are updated.
+
 == Prototype
 
 == Proxy
