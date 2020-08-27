@@ -40,6 +40,7 @@ Both parent and leaf nodes implement an interface that allows both to be treated
 The interface defines a method for getting a slice of children.
 All nodes implement Stringer, for uniform access.
 The nodes form an expression tree.
+Several expressions are output in in/pre/postfix notation.
 
 == Creation (Builder, Factory, Singleton)
 
@@ -109,6 +110,18 @@ The definitions are applied by reference rather than copying them to conserve me
 Styles are modifiable so that all affected sections can be restyled by just altering the style definition.
 
 == Iterator
+
+A functional iterator backed by a slice of values.
+The iterator itself is a function that returns (T, bool) for some type T to be iterated.
+The value of T is only valid if the bool is true, else the T is a zero value.
+The method that returns the iterator is effectively a function generator.
+The generated iterator has a closure on value(s) that track the iteration progress.
+Once all values have been exhausted, the iterator will return (zero value, false) no matter how many times it is called.
+
+In this case, the type containing the values to be iterated is mutable (values can be added or removed).
+The iterator will panic if any modifications have been made since the iterator was created,
+even if the modifications as a whole return to the original state at the time the iterator was generated.
+The check isn't perfect, it's theoretically possible to make modifications it won't detect, but this is difficult enough to be ignored.    
 
 == Mediator
 
