@@ -39,7 +39,8 @@ func (p *ProductNames) RemoveProductName(product string) *ProductNames {
 }
 
 // Iter generates an iterator of the product names, and panics if modifications were made since the iterator was created
-func (p ProductNames) Iter() func() (product string, valid bool) {
+// Although it makes no modifications it has to have a pointer receiver to see updates to the modification counter
+func (p *ProductNames) Iter() func() (product string, valid bool) {
 	var (
 		modifications = p.modifications
 		mapIter = reflect.ValueOf(p.names).MapRange()
@@ -66,4 +67,9 @@ func main() {
 	for product, hasNext := iter(); hasNext; product, hasNext = iter() {
 		fmt.Println("Product ", product)
 	}
+	
+	// Die if modifications made during iteration
+	iter = p.Iter()
+	p.RemoveProductName("tvs")
+	iter()
 }
