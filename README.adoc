@@ -188,6 +188,8 @@ The proxy caches results of a slow idempotent task.
 
 == State
 
+A simple finite state machine for a car wash.
+
 == Strategy Pattern
 
 Two sorting algorithms, bubble and go standard sort, that sort items. Same api is used in both cases.
