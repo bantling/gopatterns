@@ -29,7 +29,7 @@ In other words it is an N times M system, where N is the data sources and format
 
 == Chain of Responsibility
 
-
+A simple example that stops after the first processor in the chain that can process the command.
 
 == Command
 
