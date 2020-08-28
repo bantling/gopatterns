@@ -96,7 +96,7 @@ Execute the code as follows (so it can find the JSON file):
 (cd cmd/creation; go run main.go)
 ```
 
-== Decorator Pattern
+== Decorator
 
 A Reader decorator counts line endings as it reads data.
 It wraps around a source reader to count the lines of.
