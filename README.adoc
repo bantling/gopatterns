@@ -197,4 +197,11 @@ The strategy for choosing an implementation is based on the number of items in t
 
 == Template
 
+A three step process for insurance claims is tailored for different types of insurance.
+Since Go doesn't have method overrides, there is no way to inherit implementations of template methods.
+As such, there is an interface of all required template methods, and each optional method is its own separate interface.
+
+A separate processor receives an instance of the required methods interface.
+When the processor wants to execute an optional method, it checks if the instance implements the appropriate interface.
+
 == Visitor
