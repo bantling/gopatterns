@@ -127,6 +127,9 @@ Modifications to a set that can be undone.
 
 == MVC
 
+Similar to mediator, but with only Customer and Address, and the Controller is the Mediator.
+Data flow is mediator (Controller) calls model to set or get data, then calls view to render result (if relevant).  
+
 == Normalization
 
 I use the word normalization to refer to a pattern for the following process:
@@ -175,10 +178,128 @@ func main() {
 }
 ....
 
-It produces output like the following:
+Output:
 
 ....
 0xc0000ae040, {Name:first Price:1.00}; 0xc0000ae060, {Name:second Price:1.00}
+....
+
+This can also be used to copy a value of one struct type to another, using a conversion, as long as the two struct types have the same members:
+
+....
+package main
+
+import (
+    "fmt"
+)
+
+type Product1 struct {
+    Name string
+    Price string
+}
+
+type Product2 struct {
+    Name string
+    Price string
+}
+
+func main() {
+    var (
+        p1 = Product1{Name: "first", Price: "1.00"}
+        p2 = Product2(p1) // clone p1 into p2
+    )
+    p2.Name = "second" // modify p2 so it is different
+    fmt.Printf("%p, %+v; %p, %+v\n", &p1, p1, &p2, p2)  
+}
+....
+
+Output:
+
+....
+0xc00010c000, {Name:first Price:1.00}; 0xc00010c020, {Name:second Price:1.00}
+....
+
+If the two structs have an nested struct of the same type, that can also be copied:
+
+....
+package main
+
+import (
+    "fmt"
+)
+
+type Inner struct {
+    Price string
+}
+
+type Product1 struct {
+    Name string
+    Inner
+}
+
+type Product2 struct {
+    Name string
+    Inner
+}
+
+func main() {
+    var (
+        p1 = Product1{Name: "first", Inner: Inner{Price: "1.00"}}
+        p2 = Product2(p1) // clone p1 into p2
+    )
+    p2.Name = "second" // modify p2 so it is different
+    fmt.Printf("%p, %+v; %p, %+v\n", &p1, p1, &p2, p2)  
+}
+....
+
+Output:
+
+....
+0xc0000ae040, {Name:first Inner:{Price:1.00}}; 0xc0000ae060, {Name:second Inner:{Price:1.00}}
+....
+ 
+However, it breaks down when two structs have a different type of nested struct, even if the nested struct types are identical.
+The closest you can get is to copy the remaining outer struct fields one by one, and convert the inner struct:
+
+....
+package main
+
+import (
+    "fmt"
+)
+
+type Inner1 struct {
+    Price string
+}
+
+type Product1 struct {
+    Name string
+    Inner Inner1
+}
+
+type Inner2 struct {
+    Price string
+}
+
+type Product2 struct {
+    Name string
+    Inner Inner2
+}
+
+func main() {
+    var (
+        p1 = Product1{Name: "first", Inner: Inner1{Price: "1.00"}}
+        p2 = Product2{Name: p1.Name, Inner: Inner2(p1.Inner)} // clone p1 into p2
+    )
+    p2.Name = "second" // modify p2 so it is different
+    fmt.Printf("%p, %+v; %p, %+v\n", &p1, p1, &p2, p2)  
+}
+....
+
+Output:
+
+....
+0xc00010c000, {Name:first Inner:{Price:1.00}}; 0xc00010c020, {Name:second Inner:{Price:1.00}}
 ....
 
 == Proxy

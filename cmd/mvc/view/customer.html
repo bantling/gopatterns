@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Customer</title>
+    <meta charset="UTF-8">
+    <style>
+      label {
+        display: block;
+      }
+
+      label > span {
+        display: inline-block;
+        width: 5em;
+      }
+
+      label > input {
+        width: 15em;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Customer</h1>
+    <form>
+      <fieldset>
+        <legend>Customer</legend>
+        <label><span>First Name</span><input id="firstName" type="text" name="firstName" value="{{.FirstName}}"></label>
+        <label><span>Last Name</span><input type="text" name="lastName" value="{{.LastName}}"></label>
+      </fieldset>
+      <fieldset>
+        <legend>Address</legend>
+        <label><span>Line</span><input type="text" name="line" value="{{.Address.Line}}"></label>
+        <label><span>City</span><input type="text" name="city" value="{{.Address.City}}"></label>
+        <label><span>Region</span><input type="text" name="region" value="{{.Address.Region}}"></label>
+        <label><span>Country</span><input type="text" name="country" value="{{.Address.Country}}"></label>
+        <label><span>Mail Code</span><input type="text" name="mailCode" value="{{.Address.MailCode}}"></label>
+      </fieldset>
+    </form>
+  </body>
+</html>
