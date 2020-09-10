@@ -130,9 +130,9 @@ Modifications to a set that can be undone.
 Similar to mediator, but with only Customer and Address, and the Controller is the Mediator.
 Data flow is mediator (Controller) calls model to set or get data, then calls view to render result (if relevant).  
 
-== Normalization
+== Normalizer
 
-I use the word normalization to refer to a pattern for the following process:
+I use the word normalizater to refer to a pattern for the following process:
 
 * Translate different source types into a single target type
 * The rules for translating each source type generally differ
@@ -146,6 +146,7 @@ You'll notice I use the word "may" a number of times.
 In fact, the particular real-world use case that prompted me to come up with this design pattern involved all points listed.
 
 This is a specialization of the Visitor pattern, where each source type has its own unique visitation rules.
+The example provided is simple.
 
 == Observer
 
@@ -314,7 +315,7 @@ The proxy caches results of a slow idempotent task.
 
 A simple finite state machine for a car wash.
 
-== Strategy Pattern
+== Strategy
 
 Two sorting algorithms, bubble and go standard sort, that sort items. Same api is used in both cases.
 The strategy for choosing an implementation is based on the number of items in the list.
