@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: Apache-2.0
+
 package view
 
 type Customer struct {

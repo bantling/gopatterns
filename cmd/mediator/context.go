@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: Apache-2.0
+
 package main
 
 // DataContext contains the contextual info for data flowing in either direction:

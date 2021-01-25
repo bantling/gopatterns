@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: Apache-2.0
+
 package main
 
 // Normalizer describes a process that produces an outout for some unknown type of input
